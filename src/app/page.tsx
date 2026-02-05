@@ -11,10 +11,10 @@ import {
 } from "@/lib/channelCategories";
 
 const SEASON_OPTIONS: { value: SeasonSlug; label: string }[] = [
-  { value: "spring", label: "春アニメ" },
-  { value: "summer", label: "夏アニメ" },
-  { value: "autumn", label: "秋アニメ" },
-  { value: "winter", label: "冬アニメ" },
+  { value: "spring", label: "春アニメ（4~6月）" },
+  { value: "summer", label: "夏アニメ（7~9月）" },
+  { value: "autumn", label: "秋アニメ（10~12月）" },
+  { value: "winter", label: "冬アニメ（1~3月）" },
 ];
 
 /** ISO 8601 を 放映開始日・時間表示用にフォーマット（日本時間） */
