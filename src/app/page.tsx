@@ -171,6 +171,9 @@ export default function Home() {
                 {loading ? "検索中…" : "検索"}
               </button>
             </div>
+            <p className="mt-2 text-xs text-base-content/50">
+              情報は Annict API を使用させていただいております
+            </p>
           </div>
         </form>
 
