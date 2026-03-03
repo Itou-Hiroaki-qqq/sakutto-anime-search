@@ -8,6 +8,8 @@ const ANNICT_GRAPHQL_ENDPOINT = "https://api.annict.com/graphql";
 /** シーズン名（API用） */
 export type SeasonSlug = "spring" | "summer" | "autumn" | "winter";
 
+const VALID_SEASONS = ["spring", "summer", "autumn", "winter"] as const;
+
 /** 表示用シーズンラベル */
 export const SEASON_LABELS: Record<SeasonSlug, string> = {
   spring: "春アニメ",
@@ -18,15 +20,9 @@ export const SEASON_LABELS: Record<SeasonSlug, string> = {
 
 /** フロントの選択値 → API用シーズン */
 export function toSeasonSlug(season: string): SeasonSlug {
-  const map: Record<string, SeasonSlug> = {
-    spring: "spring",
-    summer: "summer",
-    autumn: "autumn",
-    winter: "winter",
-  };
-  const s = map[season];
-  if (!s) throw new Error(`Invalid season: ${season}`);
-  return s;
+  if (!(VALID_SEASONS as readonly string[]).includes(season))
+    throw new Error(`Invalid season: ${season}`);
+  return season as SeasonSlug;
 }
 
 /** 表示用の一覧1行 */
@@ -60,6 +56,7 @@ interface SearchWorksResponse {
       };
     };
   };
+  errors?: Array<{ message: string }>;
 }
 
 const SEARCH_WORKS_QUERY = `
@@ -135,9 +132,10 @@ export async function fetchSeasonPrograms(
     const json = (await res.json()) as SearchWorksResponse;
 
     if (json.data?.searchWorks == null) {
-      const err = (json as { errors?: Array<{ message: string }> }).errors;
       throw new Error(
-        err?.length ? err.map((e) => e.message).join(", ") : "Unknown API error"
+        json.errors?.length
+          ? json.errors.map((e) => e.message).join(", ")
+          : "Unknown API error"
       );
     }
 

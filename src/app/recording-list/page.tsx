@@ -3,27 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { SeasonProgramRow } from "@/lib/annict";
+import { formatStartedAt } from "@/lib/format";
 
 const STORAGE_KEY = "recording-list";
-
-/** ISO 8601 を 放映開始日・時間表示用にフォーマット（日本時間） */
-function formatStartedAt(iso: string): { date: string; time: string } {
-  const d = new Date(iso);
-  const jst = new Date(
-    d.getTime() + (d.getTimezoneOffset() + 9 * 60) * 60 * 1000
-  );
-  const date = jst.toLocaleDateString("ja-JP", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  const time = jst.toLocaleTimeString("ja-JP", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-  return { date, time };
-}
 
 export default function RecordingListPage() {
   const [items, setItems] = useState<SeasonProgramRow[] | null>(null);
